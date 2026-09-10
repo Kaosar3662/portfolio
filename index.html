@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaosar — Full Stack Developer & Cloud Engineer</title>
+  <meta name="description" content="Full Stack Developer & Cloud Engineer. Open to work.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap">
+
+  <style>
+    /* ─── Tokens ─────────────────────────────────────────── */
+    :root {
+      --bg:          #09090C;
+      --surface:     #111117;
+      --border:      #1C1C25;
+      --text:        #EDEAF8;
+      --muted:       #6B697E;
+      --subtle:      #31303E;
+      --accent:      #7C6AF5;
+      --accent-dim:  rgba(124,106,245,0.10);
+      --accent-glow: rgba(124,106,245,0.22);
+      --green:       #4ADE80;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg:         #F5F4FB;
+        --surface:    #FFFFFF;
+        --border:     #E0DDED;
+        --text:       #16151E;
+        --muted:      #7A778C;
+        --subtle:     #C8C5D8;
+        --accent:     #5B4AD8;
+        --accent-dim: rgba(91,74,216,0.08);
+        --accent-glow:rgba(91,74,216,0.18);
+        --green:      #16A34A;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg:          #09090C;
+      --surface:     #111117;
+      --border:      #1C1C25;
+      --text:        #EDEAF8;
+      --muted:       #6B697E;
+      --subtle:      #31303E;
+      --accent:      #7C6AF5;
+      --accent-dim:  rgba(124,106,245,0.10);
+      --accent-glow: rgba(124,106,245,0.22);
+      --green:       #4ADE80;
+    }
+
+    :root[data-theme="light"] {
+      --bg:         #F5F4FB;
+      --surface:    #FFFFFF;
+      --border:     #E0DDED;
+      --text:       #16151E;
+      --muted:      #7A778C;
+      --subtle:     #C8C5D8;
+      --accent:     #5B4AD8;
+      --accent-dim: rgba(91,74,216,0.08);
+      --accent-glow:rgba(91,74,216,0.18);
+      --green:      #16A34A;
+    }
+
+    /* ─── Reset & Base ───────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Navigation ─────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 1.1rem;
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 400;
+      transition: color 0.18s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* Hamburger button */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: var(--text);
+    }
+
+    .nav-burger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: currentColor;
+      transition: transform 0.22s, opacity 0.22s;
+      transform-origin: center;
+    }
+
+    /* X animation when open */
+    nav.open .nav-burger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    nav.open .nav-burger span:nth-child(2) { opacity: 0; }
+    nav.open .nav-burger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile drawer */
+    .nav-drawer {
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.28s ease, padding-bottom 0.28s ease;
+    }
+
+    nav.open .nav-drawer {
+      max-height: 220px;
+      padding-bottom: 1rem;
+    }
+
+    .nav-drawer a {
+      font-size: 1rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding-block: 0.8rem;
+      border-top: 1px solid var(--border);
+      transition: color 0.18s;
+    }
+
+    .nav-drawer a:hover { color: var(--text); }
+
+    /* ─── Wrapper ────────────────────────────────────────── */
+    .wrap {
+      max-width: 940px;
+      margin-inline: auto;
+    }
+
+    /* ─── Hero ───────────────────────────────────────────── */
+    .hero {
+      padding-block: 6.5rem 5rem;
+    }
+
+    .hero-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      display: block;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.18s;
+    }
+
+    .hero-avatar:hover { border-color: var(--accent); }
+
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 1.75rem;
+    }
+
+    .pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 2.2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(4.5rem, 14vw, 9.5rem);
+      line-height: 0.9;
+      letter-spacing: -0.045em;
+      color: var(--text);
+      text-wrap: balance;
+      margin-bottom: 2rem;
+    }
+
+    .hero-name em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: var(--muted);
+      max-width: 50ch;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.02em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 3px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .chip.hi {
+      color: var(--accent);
+      background: var(--accent-dim);
+      border-color: rgba(124,106,245,0.25);
+    }
+
+    /* ─── Section shell ──────────────────────────────────── */
+    section {
+      padding-block: 4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .sec-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 2.75rem;
+    }
+
+    .sec-label span { color: var(--accent); margin-right: 0.15em; }
+
+    /* ─── Skills ─────────────────────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 2.25rem 3rem;
+    }
+
+    .skill-group h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.85rem;
+    }
+
+    .skill-group ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.38rem;
+    }
+
+    .skill-group li {
+      font-size: 0.875rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .skill-group li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+
+    /* ─── Projects ───────────────────────────────────────── */
+    .projects-mosaic {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .proj {
+      display: block;
+      background: var(--bg);
+      padding: 2rem 2rem 1.75rem;
+      text-decoration: none;
+      position: relative;
+      transition: background 0.18s;
+      outline-offset: -2px;
+    }
+
+    .proj:hover { background: var(--surface); }
+    .proj:focus-visible { outline: 2px solid var(--accent); }
+
+    .proj-arrow {
+      position: absolute;
+      top: 1.6rem;
+      right: 1.6rem;
+      font-size: 0.9rem;
+      color: var(--subtle);
+      transition: color 0.18s, transform 0.18s;
+      line-height: 1;
+    }
+
+    .proj:hover .proj-arrow {
+      color: var(--accent);
+      transform: translate(3px,-3px);
+    }
+
+    .proj-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      opacity: 0.85;
+    }
+
+    .proj-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin-bottom: 0.55rem;
+      line-height: 1.15;
+    }
+
+    .proj-desc {
+      font-size: 0.845rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .proj-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .proj-stack span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.02em;
+      color: var(--subtle);
+      border: 1px solid var(--border);
+      padding: 0.18rem 0.5rem;
+      border-radius: 2px;
+    }
+
+    /* ─── Contact ────────────────────────────────────────── */
+    .contact-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-headline {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--text);
+      text-wrap: balance;
+      max-width: 12ch;
+    }
+
+    .contact-headline span { color: var(--accent); }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      padding-top: 0.35rem;
+    }
+
+    .clink {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.88rem;
+      transition: color 0.18s;
+    }
+
+    .clink:hover { color: var(--text); }
+    .clink:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+    .clink-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--accent);
+      transition: border-color 0.18s, background 0.18s;
+    }
+
+    .clink:hover .clink-icon {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* ─── Footer ─────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-block: 1.75rem;
+      margin-top: 4rem;
+    }
+
+    .footer-inner {
+      max-width: 940px;
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    footer p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* ─── Responsive ─────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .projects-mosaic { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links  { display: none; }
+      .nav-burger { display: flex; }
+      .nav-drawer { display: flex; }
+      .hero { padding-block: 3.5rem 2.5rem; }
+      section { padding-block: 3rem; }
+      .contact-headline { font-size: 2.2rem; }
+      .contact-row { flex-direction: column; gap: 2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pulse { animation: none; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Navigation ──────────────────────────────────────── -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">ka<span>o</span>sar</a>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-drawer" id="drawer" aria-hidden="true">
+    <a href="#skills" class="drawer-link">Skills</a>
+    <a href="#projects" class="drawer-link">Projects</a>
+    <a href="#contact" class="drawer-link">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ─── Hero ─────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <img
+      src="https://avatars.githubusercontent.com/u/202539387?v=4"
+      alt="Kaosar"
+      class="hero-avatar"
+      width="64"
+      height="64"
+    >
+    <div class="hero-status">
+      <span class="pulse"></span>
+      Open to work
+    </div>
+
+    <h1 class="hero-name">Ka<em>o</em>sar</h1>
+
+    <p class="hero-sub">
+      Full Stack Developer &amp; Cloud Engineer. I build web applications and infrastructure — from pixel-perfect UI to scalable deployment on AWS.
+    </p>
+
+    <div class="hero-chips">
+      <span class="chip hi">Full Stack</span>
+      <span class="chip hi">DevOps / Cloud</span>
+      <span class="chip">React</span>
+      <span class="chip">Next.js</span>
+      <span class="chip">PHP Laravel</span>
+      <span class="chip">AWS</span>
+      <span class="chip">Tailwind</span>
+      <span class="chip">Figma</span>
+    </div>
+  </section>
+
+  <!-- ─── Skills ────────────────────────────────────────── -->
+  <section id="skills">
+    <p class="sec-label"><span>//</span> Skills</p>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3>Frontend</h3>
+        <ul>
+          <li>React</li>
+          <li>Next.js</li>
+          <li>Tailwind CSS</li>
+          <li>HTML / CSS / JS</li>
+          <li>Framer</li>
+          <li>Spline</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Backend</h3>
+        <ul>
+          <li>PHP / Laravel</li>
+          <li>MySQL</li>
+          <li>REST APIs</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Cloud &amp; DevOps</h3>
+        <ul>
+          <li>AWS S3 / Lambda</li>
+          <li>CloudFront CDN</li>
+          <li>Cloudflare</li>
+          <li>Hostinger</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Design Tools</h3>
+        <ul>
+          <li>Figma</li>
+          <li>Framer</li>
+          <li>Spline</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Projects ──────────────────────────────────────── -->
+  <section id="projects">
+    <p class="sec-label"><span>//</span> Projects</p>
+    <div class="projects-mosaic">
+
+      <a href="https://linkfilm.ai" target="_blank" rel="noopener" class="proj">
+        <span class="proj-arrow">↗</span>
+        <p class="proj-type">AI · Platform</p>
+        <h3 class="proj-name">Linkfilm</h3>
+        <p class="proj-desc">AI-powered platform for filmmakers — intelligent tooling built for the modern creative workflow.</p>
+        <div class="proj-stack">
+          <span>Next.js</span><span>AI</span><span>AWS</span>
+        </div>
+      </a>
+
+      <a href="https://webocean.io" target="_blank" rel="noopener" class="proj">
+        <span class="proj-arrow">↗</span>
+        <p class="proj-type">Agency · Web</p>
+        <h3 class="proj-name">Webocean</h3>
+        <p class="proj-desc">Web design &amp; development agency. Delivering digital products for businesses from concept to launch.</p>
+        <div class="proj-stack">
+          <span>React</span><span>Tailwind</span><span>Laravel</span>
+        </div>
+      </a>
+
+      <a href="https://no-login-task-collab.vercel.app" target="_blank" rel="noopener" class="proj">
+        <span class="proj-arrow">↗</span>
+        <p class="proj-type">App · Productivity</p>
+        <h3 class="proj-name">Task Collab</h3>
+        <p class="proj-desc">Collaborative task management with zero friction — no login, no setup. Just share and work.</p>
+        <div class="proj-stack">
+          <span>React</span><span>Realtime</span><span>Vercel</span>
+        </div>
+      </a>
+
+      <a href="https://particle-loading.vercel.app" target="_blank" rel="noopener" class="proj">
+        <span class="proj-arrow">↗</span>
+        <p class="proj-type">UI · Component</p>
+        <h3 class="proj-name">Particle Loading</h3>
+        <p class="proj-desc">A drop-in particle-based loading animation. Smooth, configurable, and built on Canvas.</p>
+        <div class="proj-stack">
+          <span>JS</span><span>Canvas API</span><span>CSS</span>
+        </div>
+      </a>
+
+      <a href="https://kaosar3662.github.io/Sline-Shoe/" target="_blank" rel="noopener" class="proj">
+        <span class="proj-arrow">↗</span>
+        <p class="proj-type">E-commerce · Frontend</p>
+        <h3 class="proj-name">Sline Shoe</h3>
+        <p class="proj-desc">A clean, minimal shoe e-commerce frontend with product listings, detail views, and a smooth shopping flow.</p>
+        <div class="proj-stack">
+          <span>HTML</span><span>CSS</span><span>JS</span>
+        </div>
+      </a>
+
+      <a href="https://personal-one-coral.vercel.app" target="_blank" rel="noopener" class="proj">
+        <span class="proj-arrow">↗</span>
+        <p class="proj-type">Portfolio · Personal</p>
+        <h3 class="proj-name">Portfolio v2</h3>
+        <p class="proj-desc">An earlier iteration of my personal site, exploring layout composition and motion design.</p>
+        <div class="proj-stack">
+          <span>React</span><span>Framer Motion</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ─── Contact ───────────────────────────────────────── -->
+  <section id="contact">
+    <p class="sec-label"><span>//</span> Contact</p>
+    <div class="contact-row">
+      <h2 class="contact-headline">Let's build something<span>.</span></h2>
+      <div class="contact-links">
+        <a href="https://github.com/kaosar3662" target="_blank" rel="noopener" class="clink">
+          <div class="clink-icon" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </div>
+          github.com/kaosar3662
+        </a>
+        <a href="mailto:kaosar3662@gmail.com" class="clink">
+          <div class="clink-icon" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </div>
+          kaosar3662@gmail.com
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ─── Footer ──────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <p>kaosar.is-a.dev</p>
+    <p>&copy; 2026 Kaosar</p>
+  </div>
+</footer>
+
+<script>
+  const nav    = document.getElementById("main-nav");
+  const burger = document.getElementById("burger");
+  const drawer = document.getElementById("drawer");
+
+  burger.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("open");
+    burger.setAttribute("aria-expanded", isOpen);
+    drawer.setAttribute("aria-hidden", !isOpen);
+  });
+
+  document.querySelectorAll(".drawer-link").forEach(link => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("open");
+      burger.setAttribute("aria-expanded", "false");
+      drawer.setAttribute("aria-hidden", "true");
+    });
+  });
+</script>
+
+</body>
+</html>
