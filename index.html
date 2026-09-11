@@ -1361,6 +1361,8 @@
     flashOk.addEventListener("click", () => {
       localStorage.setItem("kaosar-warned", "1");
       flashWarn.classList.add("hidden");
+      // kick off glitch for first-time visitors now that they've acknowledged
+      if (window.__startGlitch) window.__startGlitch();
       // After warning, show theme choice if light mode and no saved pref
       if (!saved && isLight) {
         prompt.classList.remove("hidden");
@@ -1479,7 +1481,11 @@
 
     // apply immediately on load so light mode borders/tints show from the start
     applyPalette(darkPalettes[idx]);
-    scheduleNext();
+
+    // expose start fn — first-time visitors trigger this after dismissing the warning
+    window.__startGlitch = () => scheduleNext();
+    // returning visitors (warning already dismissed) start glitch immediately
+    if (localStorage.getItem("kaosar-warned")) scheduleNext();
 
     // expose so theme toggle can re-apply current palette instantly
     window.__applyCurrentPalette = () => applyPalette(darkPalettes[idx]);
