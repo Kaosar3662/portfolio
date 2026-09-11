@@ -51,15 +51,15 @@
     }
 
     :root[data-theme="light"] {
-      --bg:          #F8F8F8;
-      --surface:     #FFFFFF;
-      --border:      #E2E2E2;
-      --text:        #0A0A0A;
-      --muted:       #666666;
-      --subtle:      #CCCCCC;
-      --accent:      #0A0A0A;
-      --accent-dim:  rgba(0,0,0,0.06);
-      --accent-glow: rgba(0,0,0,0.10);
+      --bg:          #E8EAF5;
+      --surface:     #F1F2FA;
+      --border:      #C4C7E0;
+      --text:        #0A0A14;
+      --muted:       #5A5D78;
+      --subtle:      #B4B8D4;
+      --accent:      #0A0A14;
+      --accent-dim:  rgba(10,10,20,0.06);
+      --accent-glow: rgba(10,10,20,0.10);
       --green:       #16A34A;
     }
 
@@ -430,6 +430,13 @@
       border: 1px solid var(--border);
       padding: 0.18rem 0.5rem;
       border-radius: 2px;
+      transition: color 0.3s, border-color 0.3s, background 0.3s;
+    }
+    [data-theme="light"] .proj-stack span {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      opacity: 0.85;
     }
 
     /* ─── Contact ────────────────────────────────────────── */
@@ -692,6 +699,19 @@
       border-color: var(--text);
     }
     .tp-btn.primary:hover { opacity: 0.88; }
+    .tp-warn {
+      font-size: 0.73rem;
+      color: var(--muted);
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 0.55rem 0.7rem;
+      margin-bottom: 1.25rem !important;
+      text-align: left;
+      line-height: 1.55;
+      opacity: 0.9;
+    }
+    .tp-warn strong { color: var(--text); font-weight: 600; }
 
     /* ─── Skills: stagger reveal + hover ────────────────────── */
     @keyframes skill-in {
@@ -760,6 +780,42 @@
     }
     body.glitching {
       animation: body-glitch 1.5s steps(2, end);
+    }
+
+    /* ─── Light-mode glitch variants ────────────────────────── */
+    @keyframes glitch-overlay-anim-light {
+      0%  { opacity:0; background:transparent; transform:none; clip-path:none; }
+      6%  { opacity:1; background:rgba(124,106,245,0.72);
+            transform:translateX(-8px) skewX(-2deg); clip-path:inset(5% 0 88% 0); }
+      12% { opacity:1; background:rgba(239,68,68,0.68);
+            transform:translateX(10px) skewX(2deg); clip-path:inset(40% 0 48% 0); }
+      18% { opacity:1; background:rgba(6,182,212,0.65);
+            transform:translateX(-6px); clip-path:inset(75% 0 10% 0); }
+      24% { opacity:1; background:rgba(245,158,11,0.62);
+            transform:translateX(12px) scaleY(1.02); clip-path:inset(20% 0 65% 0); }
+      30% { opacity:1; background:rgba(217,70,239,0.68);
+            transform:translateX(-10px) skewX(-1deg); clip-path:inset(60% 0 25% 0); }
+      36% { opacity:1; background:rgba(34,197,94,0.60);
+            transform:translateX(4px); clip-path:inset(88% 0 2% 0); }
+      42% { opacity:0.5; background:transparent; transform:none; clip-path:none; }
+      55% { opacity:0; }
+      100%{ opacity:0; }
+    }
+    @keyframes body-glitch-light {
+      0%  { filter:none; transform:none; }
+      8%  { filter:saturate(5) hue-rotate(120deg) contrast(1.3); transform:translateX(-3px); }
+      16% { filter:saturate(6) hue-rotate(260deg) contrast(1.4) brightness(0.88); transform:translateX(4px) skewX(1deg); }
+      24% { filter:saturate(4) hue-rotate(40deg) contrast(1.3) brightness(0.92); transform:translateX(-5px); }
+      32% { filter:saturate(5) hue-rotate(180deg) contrast(1.2); transform:translateX(3px); }
+      40% { filter:saturate(3) hue-rotate(300deg) contrast(1.1); transform:none; }
+      52% { filter:saturate(1.5) contrast(1.05); }
+      100%{ filter:none; transform:none; }
+    }
+    [data-theme="light"] #glitch-overlay.glitching {
+      animation: glitch-overlay-anim-light 1.6s steps(1) forwards;
+    }
+    [data-theme="light"] body.glitching {
+      animation: body-glitch-light 1.5s steps(2, end);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1003,6 +1059,7 @@
   <div class="tp-box">
     <h3>Choose your vibe</h3>
     <p>Your device is in light mode. Want to keep it light or go dark?</p>
+    <p class="tp-warn"><strong>⚠️ Heads up</strong> — this site has periodic flashing colour effects every 8–10 s that rapidly shift colours. If you have photosensitive epilepsy or are sensitive to quick colour changes, please be aware before continuing.</p>
     <div class="tp-btns">
       <button class="tp-btn" id="tp-light">☀️ Light</button>
       <button class="tp-btn primary" id="tp-dark">🌑 Dark</button>
@@ -1270,6 +1327,8 @@
       } else {
         particleRGB = "80,80,80";
       }
+      // re-apply current glitch palette immediately so accent/particles sync now
+      if (window.__applyCurrentPalette) window.__applyCurrentPalette();
     }
 
     // Always start dark, then check saved pref
@@ -1332,8 +1391,8 @@
         bg:"#08000A", surface:"#110012", border:"#1A001A", text:"#FDE8FF", muted:"#7A3A7A", subtle:"#200020" },
     ];
 
-    // Light mode only cycles accent — bg/surface stay light
-    const lightBase = { bg:"#F8F8F8", surface:"#FFFFFF", border:"#E2E2E2", text:"#0A0A0A", muted:"#666666", subtle:"#CCCCCC" };
+    // Light mode base — cool periwinkle tone
+    const lightBase = { border:"#C4C7E0", text:"#0A0A14", muted:"#5A5D78", subtle:"#B4B8D4" };
 
     const root    = document.documentElement;
     const body    = document.body;
@@ -1343,17 +1402,31 @@
 
     function applyPalette(p) {
       const isLight = root.getAttribute("data-theme") === "light";
-      const base    = isLight ? lightBase : p;
-      root.style.setProperty("--bg",          base.bg);
-      root.style.setProperty("--surface",     base.surface);
-      root.style.setProperty("--border",      base.border);
-      root.style.setProperty("--text",        base.text);
-      root.style.setProperty("--muted",       base.muted);
-      root.style.setProperty("--subtle",      base.subtle);
+      if (isLight) {
+        // Tint the warm-paper base with 7% of the accent colour
+        const [r, g, b] = p.rgb.split(",").map(Number);
+        const mix = (base, c, t) => Math.round(base + (c - base) * t);
+        const tBg     = `rgb(${mix(232,r,0.08)},${mix(234,g,0.08)},${mix(245,b,0.08)})`;
+        const tSurf   = `rgb(${mix(241,r,0.05)},${mix(242,g,0.05)},${mix(250,b,0.05)})`;
+        const tBorder = `rgba(${r},${g},${b},0.30)`;
+        root.style.setProperty("--bg",      tBg);
+        root.style.setProperty("--surface", tSurf);
+        root.style.setProperty("--border",  tBorder);
+        root.style.setProperty("--text",    lightBase.text);
+        root.style.setProperty("--muted",   lightBase.muted);
+        root.style.setProperty("--subtle",  lightBase.subtle);
+      } else {
+        root.style.setProperty("--bg",      p.bg);
+        root.style.setProperty("--surface", p.surface);
+        root.style.setProperty("--border",  p.border);
+        root.style.setProperty("--text",    p.text);
+        root.style.setProperty("--muted",   p.muted);
+        root.style.setProperty("--subtle",  p.subtle);
+      }
       root.style.setProperty("--accent",      p.accent);
       root.style.setProperty("--accent-dim",  p.dim);
       root.style.setProperty("--accent-glow", p.glow);
-      particleRGB = isLight ? "80,80,80" : p.rgb;
+      particleRGB = p.rgb;
     }
 
     function triggerGlitch() {
@@ -1381,7 +1454,12 @@
       glitchTimer = setTimeout(triggerGlitch, 8000 + Math.random() * 2000);
     }
 
+    // apply immediately on load so light mode borders/tints show from the start
+    applyPalette(darkPalettes[idx]);
     scheduleNext();
+
+    // expose so theme toggle can re-apply current palette instantly
+    window.__applyCurrentPalette = () => applyPalette(darkPalettes[idx]);
   })();
 </script>
 
