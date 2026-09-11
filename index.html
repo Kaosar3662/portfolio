@@ -36,21 +36,7 @@
       --green:       #FFFFFF;
     }
 
-    @media (prefers-color-scheme: light) {
-      :root:not([data-theme="dark"]) {
-        --bg:         #FFFFFF;
-        --surface:    #F5F5F5;
-        --border:     #E0E0E0;
-        --text:       #0A0A0A;
-        --muted:      #666666;
-        --subtle:     #CCCCCC;
-        --accent:     #000000;
-        --accent-dim: rgba(0,0,0,0.06);
-        --accent-glow:rgba(0,0,0,0.12);
-        --green:      #000000;
-      }
-    }
-
+    /* system pref ignored — JS always sets data-theme */
     :root[data-theme="dark"] {
       --bg:          #000000;
       --surface:     #0D0D0D;
@@ -61,20 +47,20 @@
       --accent:      #FFFFFF;
       --accent-dim:  rgba(255,255,255,0.07);
       --accent-glow: rgba(255,255,255,0.14);
-      --green:       #FFFFFF;
+      --green:       #4ADE80;
     }
 
     :root[data-theme="light"] {
-      --bg:         #FFFFFF;
-      --surface:    #F5F5F5;
-      --border:     #E0E0E0;
-      --text:       #0A0A0A;
-      --muted:      #666666;
-      --subtle:     #CCCCCC;
-      --accent:     #000000;
-      --accent-dim: rgba(0,0,0,0.06);
-      --accent-glow:rgba(0,0,0,0.12);
-      --green:      #000000;
+      --bg:          #F8F8F8;
+      --surface:     #FFFFFF;
+      --border:      #E2E2E2;
+      --text:        #0A0A0A;
+      --muted:       #666666;
+      --subtle:      #CCCCCC;
+      --accent:      #0A0A0A;
+      --accent-dim:  rgba(0,0,0,0.06);
+      --accent-glow: rgba(0,0,0,0.10);
+      --green:       #16A34A;
     }
 
     /* ─── Selection ─────────────────────────────────────── */
@@ -105,6 +91,8 @@
       z-index: 100;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
+      margin-inline: calc(-1 * clamp(1.25rem, 5vw, 2.5rem));
+      padding-inline: clamp(1.25rem, 5vw, 2.5rem);
     }
 
     .nav-inner {
@@ -551,7 +539,7 @@
       width: 520px;
       height: 520px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.13) 0%, transparent 70%);
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
       transform: translate(-50%, -50%);
       transition: transform 0.08s linear;
       z-index: 0;
@@ -568,7 +556,7 @@
       position: absolute;
       inset: 0;
       background: radial-gradient(circle at var(--shine-x) var(--shine-y),
-        rgba(255,255,255,0.10) 0%, transparent 65%);
+        var(--accent-dim) 0%, transparent 65%);
       opacity: 0;
       transition: opacity 0.25s;
       pointer-events: none;
@@ -599,6 +587,111 @@
 
     /* ─── Magnetic contact links ─────────────────────────── */
     .clink { will-change: transform; }
+
+    /* ─── Theme toggle pill ──────────────────────────────── */
+    .nav-controls {
+      display: flex;
+      align-items: center;
+    }
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .ti {
+      font-size: 0.82rem;
+      line-height: 1;
+      opacity: 0.22;
+      transition: opacity 0.22s;
+      display: flex;
+      align-items: center;
+    }
+    [data-theme="dark"]  .ti-moon { opacity: 1; }
+    [data-theme="light"] .ti-sun  { opacity: 1; }
+    .toggle-track {
+      width: 42px;
+      height: 23px;
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      position: relative;
+      transition: background 0.22s, border-color 0.22s;
+    }
+    .toggle-thumb {
+      width: 17px;
+      height: 17px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.22s;
+    }
+    [data-theme="light"] .toggle-thumb {
+      transform: translateX(19px);
+    }
+    [data-theme="light"] .toggle-track {
+      background: var(--border);
+      border-color: var(--subtle);
+    }
+
+    /* ─── Theme preference overlay ───────────────────────── */
+    #theme-prompt {
+      position: fixed; inset: 0; z-index: 20000;
+      background: rgba(0,0,0,0.72);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 1; transition: opacity 0.3s;
+    }
+    #theme-prompt.hidden { opacity: 0; pointer-events: none; }
+    .tp-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem 2rem 1.75rem;
+      max-width: 320px;
+      width: calc(100% - 2rem);
+      text-align: center;
+    }
+    .tp-box h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .tp-box p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .tp-btns { display: flex; gap: 0.65rem; }
+    .tp-btn {
+      flex: 1;
+      padding: 0.65rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .tp-btn:hover { border-color: var(--accent); }
+    .tp-btn.primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+    .tp-btn.primary:hover { opacity: 0.88; }
 
     /* ─── Skills: stagger reveal + hover ────────────────────── */
     @keyframes skill-in {
@@ -686,6 +779,13 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <div class="nav-controls">
+      <button class="theme-toggle" id="theme-toggle" role="switch" aria-label="Toggle theme" title="Toggle dark / light">
+        <span class="ti ti-moon">🌙</span>
+        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+        <span class="ti ti-sun">☀️</span>
+      </button>
+    </div>
     <button class="nav-burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -897,6 +997,18 @@
 
 <!-- ─── Glitch overlay ──────────────────────────────────── -->
 <div id="glitch-overlay" aria-hidden="true"></div>
+
+<!-- ─── Theme preference prompt ─────────────────────────── -->
+<div id="theme-prompt" class="hidden" aria-modal="true" role="dialog" aria-label="Choose theme">
+  <div class="tp-box">
+    <h3>Choose your vibe</h3>
+    <p>Your device is in light mode. Want to keep it light or go dark?</p>
+    <div class="tp-btns">
+      <button class="tp-btn" id="tp-light">☀️ Light</button>
+      <button class="tp-btn primary" id="tp-dark">🌑 Dark</button>
+    </div>
+  </div>
+</div>
 
 <!-- ─── Footer ──────────────────────────────────────────── -->
 <footer>
@@ -1138,102 +1250,138 @@
     }, { passive: true });
   });
 
+  // ── Theme init ────────────────────────────────────────────
+  (function () {
+    const root   = document.documentElement;
+    const prompt = document.getElementById("theme-prompt");
+    const tpDark = document.getElementById("tp-dark");
+    const tpLight= document.getElementById("tp-light");
+    const themeBtn = document.getElementById("theme-toggle");
+
+    function setTheme(mode, save) {
+      root.setAttribute("data-theme", mode);
+      if (save) localStorage.setItem("kaosar-theme", mode);
+      const isLight = mode === "light";
+      themeBtn.setAttribute("aria-checked", String(isLight));
+      themeBtn.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+      // Update particle colour for base theme
+      if (!isLight) {
+        if (particleRGB === "0,0,0") particleRGB = "255,255,255";
+      } else {
+        particleRGB = "80,80,80";
+      }
+    }
+
+    // Always start dark, then check saved pref
+    const saved = localStorage.getItem("kaosar-theme");
+    if (saved) {
+      setTheme(saved, false);
+    } else {
+      setTheme("dark", false);
+      // If device is light mode, show the prompt
+      if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+        prompt.classList.remove("hidden");
+      }
+    }
+
+    tpDark.addEventListener("click", () => {
+      setTheme("dark", true);
+      prompt.classList.add("hidden");
+    });
+    tpLight.addEventListener("click", () => {
+      setTheme("light", true);
+      prompt.classList.add("hidden");
+    });
+    themeBtn.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      setTheme(next, true);
+    });
+
+    // expose for glitch
+    window.__setTheme = setTheme;
+  })();
+
   // ── Periodic palette glitch ───────────────────────────────
   (function () {
-    const palettes = [
-      { bg:"#09090C", surface:"#111117", border:"#1C1C25", text:"#EDEAF8",
-        muted:"#6B697E", subtle:"#31303E",
-        accent:"#7C6AF5", dim:"rgba(124,106,245,0.10)", glow:"rgba(124,106,245,0.22)",
-        rgb:"124,106,245" },                                        // purple
+    const darkPalettes = [
+      { accent:"#FFFFFF", dim:"rgba(255,255,255,0.07)", glow:"rgba(255,255,255,0.14)", rgb:"255,255,255",
+        bg:"#000000", surface:"#0D0D0D", border:"#1A1A1A", text:"#F5F5F5", muted:"#666666", subtle:"#2A2A2A" },
 
-      { bg:"#000000", surface:"#0D0D0D", border:"#1A1A1A", text:"#F5F5F5",
-        muted:"#666666", subtle:"#2A2A2A",
-        accent:"#FFFFFF", dim:"rgba(255,255,255,0.07)", glow:"rgba(255,255,255,0.14)",
-        rgb:"255,255,255" },                                        // black/white
+      { accent:"#7C6AF5", dim:"rgba(124,106,245,0.10)", glow:"rgba(124,106,245,0.22)", rgb:"124,106,245",
+        bg:"#09090C", surface:"#111117", border:"#1C1C25", text:"#EDEAF8", muted:"#6B697E", subtle:"#31303E" },
 
-      { bg:"#0A0000", surface:"#130000", border:"#200000", text:"#FFF0F0",
-        muted:"#7A5555", subtle:"#2A1010",
-        accent:"#EF4444", dim:"rgba(239,68,68,0.10)", glow:"rgba(239,68,68,0.22)",
-        rgb:"239,68,68" },                                          // red
+      { accent:"#EF4444", dim:"rgba(239,68,68,0.10)", glow:"rgba(239,68,68,0.22)", rgb:"239,68,68",
+        bg:"#0A0000", surface:"#130000", border:"#200000", text:"#FFF0F0", muted:"#7A5555", subtle:"#2A1010" },
 
-      { bg:"#080700", surface:"#120F00", border:"#1C1800", text:"#FFFDE8",
-        muted:"#7A7055", subtle:"#2A2500",
-        accent:"#F59E0B", dim:"rgba(245,158,11,0.10)", glow:"rgba(245,158,11,0.22)",
-        rgb:"245,158,11" },                                         // amber
+      { accent:"#F59E0B", dim:"rgba(245,158,11,0.10)", glow:"rgba(245,158,11,0.22)", rgb:"245,158,11",
+        bg:"#080700", surface:"#120F00", border:"#1C1800", text:"#FFFDE8", muted:"#7A7055", subtle:"#2A2500" },
 
-      { bg:"#00040A", surface:"#000C17", border:"#001525", text:"#E8F0FF",
-        muted:"#4A6A8A", subtle:"#001530",
-        accent:"#3B82F6", dim:"rgba(59,130,246,0.10)", glow:"rgba(59,130,246,0.22)",
-        rgb:"59,130,246" },                                         // blue
+      { accent:"#3B82F6", dim:"rgba(59,130,246,0.10)", glow:"rgba(59,130,246,0.22)", rgb:"59,130,246",
+        bg:"#00040A", surface:"#000C17", border:"#001525", text:"#E8F0FF", muted:"#4A6A8A", subtle:"#001530" },
 
-      { bg:"#000A0A", surface:"#001212", border:"#001A1A", text:"#E8FFFF",
-        muted:"#3A7A7A", subtle:"#001818",
-        accent:"#06B6D4", dim:"rgba(6,182,212,0.10)", glow:"rgba(6,182,212,0.22)",
-        rgb:"6,182,212" },                                          // cyan
+      { accent:"#06B6D4", dim:"rgba(6,182,212,0.10)", glow:"rgba(6,182,212,0.22)", rgb:"6,182,212",
+        bg:"#000A0A", surface:"#001212", border:"#001A1A", text:"#E8FFFF", muted:"#3A7A7A", subtle:"#001818" },
 
-      { bg:"#000A02", surface:"#001205", border:"#001A08", text:"#E8FFE8",
-        muted:"#3A7A4A", subtle:"#001808",
-        accent:"#22C55E", dim:"rgba(34,197,94,0.10)", glow:"rgba(34,197,94,0.22)",
-        rgb:"34,197,94" },                                          // green
+      { accent:"#22C55E", dim:"rgba(34,197,94,0.10)", glow:"rgba(34,197,94,0.22)", rgb:"34,197,94",
+        bg:"#000A02", surface:"#001205", border:"#001A08", text:"#E8FFE8", muted:"#3A7A4A", subtle:"#001808" },
 
-      { bg:"#0A0400", surface:"#120800", border:"#1A0C00", text:"#FFF5E8",
-        muted:"#7A5533", subtle:"#2A1500",
-        accent:"#F97316", dim:"rgba(249,115,22,0.10)", glow:"rgba(249,115,22,0.22)",
-        rgb:"249,115,22" },                                         // orange
+      { accent:"#F97316", dim:"rgba(249,115,22,0.10)", glow:"rgba(249,115,22,0.22)", rgb:"249,115,22",
+        bg:"#0A0400", surface:"#120800", border:"#1A0C00", text:"#FFF5E8", muted:"#7A5533", subtle:"#2A1500" },
 
-      { bg:"#08000A", surface:"#110012", border:"#1A001A", text:"#FDE8FF",
-        muted:"#7A3A7A", subtle:"#200020",
-        accent:"#D946EF", dim:"rgba(217,70,239,0.10)", glow:"rgba(217,70,239,0.22)",
-        rgb:"217,70,239" },                                         // magenta
+      { accent:"#D946EF", dim:"rgba(217,70,239,0.10)", glow:"rgba(217,70,239,0.22)", rgb:"217,70,239",
+        bg:"#08000A", surface:"#110012", border:"#1A001A", text:"#FDE8FF", muted:"#7A3A7A", subtle:"#200020" },
     ];
+
+    // Light mode only cycles accent — bg/surface stay light
+    const lightBase = { bg:"#F8F8F8", surface:"#FFFFFF", border:"#E2E2E2", text:"#0A0A0A", muted:"#666666", subtle:"#CCCCCC" };
 
     const root    = document.documentElement;
     const body    = document.body;
     const overlay = document.getElementById("glitch-overlay");
-    let idx = 1; // start after current black/white
+    let idx = 0;
+    let glitchTimer = null;
 
     function applyPalette(p) {
-      root.style.setProperty("--bg",         p.bg);
-      root.style.setProperty("--surface",    p.surface);
-      root.style.setProperty("--border",     p.border);
-      root.style.setProperty("--text",       p.text);
-      root.style.setProperty("--muted",      p.muted);
-      root.style.setProperty("--subtle",     p.subtle);
-      root.style.setProperty("--accent",     p.accent);
-      root.style.setProperty("--accent-dim", p.dim);
-      root.style.setProperty("--accent-glow",p.glow);
-      root.style.setProperty("--green",      p.accent);
-      particleRGB = p.rgb;
+      const isLight = root.getAttribute("data-theme") === "light";
+      const base    = isLight ? lightBase : p;
+      root.style.setProperty("--bg",          base.bg);
+      root.style.setProperty("--surface",     base.surface);
+      root.style.setProperty("--border",      base.border);
+      root.style.setProperty("--text",        base.text);
+      root.style.setProperty("--muted",       base.muted);
+      root.style.setProperty("--subtle",      base.subtle);
+      root.style.setProperty("--accent",      p.accent);
+      root.style.setProperty("--accent-dim",  p.dim);
+      root.style.setProperty("--accent-glow", p.glow);
+      particleRGB = isLight ? "80,80,80" : p.rgb;
     }
 
     function triggerGlitch() {
-      // Start visual chaos
       body.classList.remove("glitching");
       overlay.classList.remove("glitching");
-      void body.offsetWidth; // reflow
-
+      void body.offsetWidth;
       body.classList.add("glitching");
       overlay.classList.add("glitching");
 
-      // Switch palette midway through the glitch
       setTimeout(() => {
-        idx = (idx + 1) % palettes.length;
-        applyPalette(palettes[idx]);
+        idx = (idx + 1) % darkPalettes.length;
+        applyPalette(darkPalettes[idx]);
       }, 450);
 
-      // Clean up animation classes
       setTimeout(() => {
         body.classList.remove("glitching");
         overlay.classList.remove("glitching");
       }, 1700);
 
-      // Schedule next glitch
-      const delay = 8000 + Math.random() * 2000; // 8–10 s
-      setTimeout(triggerGlitch, delay);
+      scheduleNext();
     }
 
-    // First fire after a random 8–10 s
-    setTimeout(triggerGlitch, 8000 + Math.random() * 2000);
+    function scheduleNext() {
+      clearTimeout(glitchTimer);
+      glitchTimer = setTimeout(triggerGlitch, 8000 + Math.random() * 2000);
+    }
+
+    scheduleNext();
   })();
 </script>
 
