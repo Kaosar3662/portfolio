@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kaosar 😎</title>
-  <meta name="description" content="Full Stack Developer & Cloud Engineer. I build web apps and cloud infrastructure - from pixel-perfect UI to scalable deployment on AWS. Open to work.">
+  <meta name="description" content="Full Stack Developer & Cloud Engineer. I build web apps and cloud infrastructure — from pixel-perfect UI to scalable deployment on AWS. Open to work.">
 
   <!-- Open Graph / Social -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://kaosar.is-a.dev">
   <meta property="og:title"       content="Kaosar 😎">
-  <meta property="og:description" content="Full Stack Developer & Cloud Engineer. I build web apps and cloud infrastructure - from pixel-perfect UI to scalable deployment on AWS. Open to work.">
+  <meta property="og:description" content="Full Stack Developer & Cloud Engineer. I build web apps and cloud infrastructure — from pixel-perfect UI to scalable deployment on AWS. Open to work.">
   <meta property="og:image"       content="https://avatars.githubusercontent.com/u/202539387?v=4">
 
   <!-- Twitter Card -->
@@ -24,57 +24,63 @@
   <style>
     /* ─── Tokens ─────────────────────────────────────────── */
     :root {
-      --bg:          #09090C;
-      --surface:     #111117;
-      --border:      #1C1C25;
-      --text:        #EDEAF8;
-      --muted:       #6B697E;
-      --subtle:      #31303E;
-      --accent:      #7C6AF5;
-      --accent-dim:  rgba(124,106,245,0.10);
-      --accent-glow: rgba(124,106,245,0.22);
-      --green:       #4ADE80;
+      --bg:          #000000;
+      --surface:     #0D0D0D;
+      --border:      #1A1A1A;
+      --text:        #F5F5F5;
+      --muted:       #666666;
+      --subtle:      #2A2A2A;
+      --accent:      #FFFFFF;
+      --accent-dim:  rgba(255,255,255,0.07);
+      --accent-glow: rgba(255,255,255,0.14);
+      --green:       #FFFFFF;
     }
 
     @media (prefers-color-scheme: light) {
       :root:not([data-theme="dark"]) {
-        --bg:         #F5F4FB;
-        --surface:    #FFFFFF;
-        --border:     #E0DDED;
-        --text:       #16151E;
-        --muted:      #7A778C;
-        --subtle:     #C8C5D8;
-        --accent:     #5B4AD8;
-        --accent-dim: rgba(91,74,216,0.08);
-        --accent-glow:rgba(91,74,216,0.18);
-        --green:      #16A34A;
+        --bg:         #FFFFFF;
+        --surface:    #F5F5F5;
+        --border:     #E0E0E0;
+        --text:       #0A0A0A;
+        --muted:      #666666;
+        --subtle:     #CCCCCC;
+        --accent:     #000000;
+        --accent-dim: rgba(0,0,0,0.06);
+        --accent-glow:rgba(0,0,0,0.12);
+        --green:      #000000;
       }
     }
 
     :root[data-theme="dark"] {
-      --bg:          #09090C;
-      --surface:     #111117;
-      --border:      #1C1C25;
-      --text:        #EDEAF8;
-      --muted:       #6B697E;
-      --subtle:      #31303E;
-      --accent:      #7C6AF5;
-      --accent-dim:  rgba(124,106,245,0.10);
-      --accent-glow: rgba(124,106,245,0.22);
-      --green:       #4ADE80;
+      --bg:          #000000;
+      --surface:     #0D0D0D;
+      --border:      #1A1A1A;
+      --text:        #F5F5F5;
+      --muted:       #666666;
+      --subtle:      #2A2A2A;
+      --accent:      #FFFFFF;
+      --accent-dim:  rgba(255,255,255,0.07);
+      --accent-glow: rgba(255,255,255,0.14);
+      --green:       #FFFFFF;
     }
 
     :root[data-theme="light"] {
-      --bg:         #F5F4FB;
-      --surface:    #FFFFFF;
-      --border:     #E0DDED;
-      --text:       #16151E;
-      --muted:      #7A778C;
-      --subtle:     #C8C5D8;
-      --accent:     #5B4AD8;
-      --accent-dim: rgba(91,74,216,0.08);
-      --accent-glow:rgba(91,74,216,0.18);
-      --green:      #16A34A;
+      --bg:         #FFFFFF;
+      --surface:    #F5F5F5;
+      --border:     #E0E0E0;
+      --text:       #0A0A0A;
+      --muted:      #666666;
+      --subtle:     #CCCCCC;
+      --accent:     #000000;
+      --accent-dim: rgba(0,0,0,0.06);
+      --accent-glow:rgba(0,0,0,0.12);
+      --green:      #000000;
+    }
+
+    /* ─── Selection ─────────────────────────────────────── */
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
     }
 
     /* ─── Reset & Base ───────────────────────────────────── */
@@ -196,6 +202,22 @@
     /* ─── Hero ───────────────────────────────────────────── */
     .hero {
       padding-block: 6.5rem 5rem;
+      position: relative;
+    }
+
+    #particle-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
+    }
+
+    .hero > *:not(#particle-canvas) {
+      position: relative;
+      z-index: 1;
     }
 
     .hero-avatar {
@@ -281,7 +303,7 @@
     .chip.hi {
       color: var(--accent);
       background: var(--accent-dim);
-      border-color: rgba(124,106,245,0.25);
+      border-color: rgba(255,255,255,0.25);
     }
 
     /* ─── Section shell ──────────────────────────────────── */
@@ -521,6 +543,132 @@
       .contact-row { flex-direction: column; gap: 2rem; }
     }
 
+    /* ─── Glow orb ───────────────────────────────────────── */
+    #glow-orb {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.13) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s linear;
+      z-index: 0;
+      will-change: transform;
+    }
+
+    /* ─── Card shine on hover/touch ──────────────────────── */
+    .proj {
+      --shine-x: 50%;
+      --shine-y: 50%;
+    }
+    .proj::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--shine-x) var(--shine-y),
+        rgba(255,255,255,0.10) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .proj:hover::after { opacity: 1; }
+
+    /* ─── Chip burst ─────────────────────────────────────── */
+    .chip { position: relative; overflow: hidden; cursor: pointer; user-select: none; }
+    @keyframes chip-pop {
+      0%   { transform: scale(1); }
+      30%  { transform: scale(1.22); }
+      70%  { transform: scale(0.94); }
+      100% { transform: scale(1); }
+    }
+    .chip-pop { animation: chip-pop 0.35s ease; }
+    @keyframes chip-burst {
+      0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.7; }
+      100% { transform: translate(-50%, -50%) scale(5); opacity: 0; }
+    }
+    .chip-ripple {
+      position: absolute;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      pointer-events: none;
+      animation: chip-burst 0.55s ease-out forwards;
+    }
+
+    /* ─── Magnetic contact links ─────────────────────────── */
+    .clink { will-change: transform; }
+
+    /* ─── Skills: stagger reveal + hover ────────────────────── */
+    @keyframes skill-in {
+      from { opacity: 0; transform: translateX(-14px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    #skills .skill-group li {
+      opacity: 0;
+    }
+    #skills.skills-visible .skill-group li {
+      animation: skill-in 0.38s ease forwards;
+    }
+    #skills .skill-group li {
+      transition: color 0.18s;
+      cursor: default;
+    }
+    #skills .skill-group li:hover {
+      color: var(--accent);
+    }
+    #skills .skill-group li:hover::before {
+      opacity: 1;
+      box-shadow: 0 0 7px var(--accent);
+    }
+    #skills .skill-group h3 {
+      transition: color 0.18s;
+    }
+    #skills .skill-group:hover h3 {
+      color: var(--accent);
+    }
+
+    /* ─── Glitch overlay ─────────────────────────────────── */
+    #glitch-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      pointer-events: none; opacity: 0;
+    }
+    #glitch-overlay.glitching {
+      animation: glitch-overlay-anim 1.6s steps(1) forwards;
+    }
+    @keyframes glitch-overlay-anim {
+      0%  { opacity:0; background:transparent; transform:none; clip-path:none; }
+      6%  { opacity:1; background:rgba(255,0,255,0.12);
+            transform:translateX(-8px) skewX(-2deg); clip-path:inset(5% 0 88% 0); }
+      12% { opacity:1; background:rgba(0,255,255,0.10);
+            transform:translateX(10px) skewX(2deg); clip-path:inset(40% 0 48% 0); }
+      18% { opacity:1; background:rgba(255,255,0,0.09);
+            transform:translateX(-6px); clip-path:inset(75% 0 10% 0); }
+      24% { opacity:0.8; background:rgba(255,0,0,0.08);
+            transform:translateX(12px) scaleY(1.02); clip-path:inset(20% 0 65% 0); }
+      30% { opacity:1; background:rgba(0,0,255,0.10);
+            transform:translateX(-10px) skewX(-1deg); clip-path:inset(60% 0 25% 0); }
+      36% { opacity:0.7; background:rgba(255,255,255,0.06);
+            transform:translateX(4px); clip-path:inset(88% 0 2% 0); }
+      42% { opacity:0.5; background:transparent; transform:none; clip-path:none; }
+      55% { opacity:0; }
+      100%{ opacity:0; }
+    }
+    @keyframes body-glitch {
+      0%  { filter:none; transform:none; }
+      8%  { filter:brightness(2.2) contrast(1.5) saturate(0.2); transform:translateX(-3px); }
+      16% { filter:hue-rotate(220deg) brightness(0.5) contrast(2); transform:translateX(4px) skewX(1deg); }
+      24% { filter:brightness(3) contrast(0.6) blur(1px); transform:translateX(-5px); }
+      32% { filter:hue-rotate(90deg) saturate(3) brightness(0.7); transform:translateX(3px); }
+      40% { filter:brightness(2) contrast(1.2) saturate(0.5); transform:none; }
+      52% { filter:brightness(1.15) contrast(1.05); }
+      100%{ filter:none; transform:none; }
+    }
+    body.glitching {
+      animation: body-glitch 1.5s steps(2, end);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .pulse { animation: none; }
       * { transition: none !important; }
@@ -553,6 +701,7 @@
 
   <!-- ─── Hero ─────────────────────────────────────────── -->
   <section class="hero" id="home">
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
     <img
       src="https://avatars.githubusercontent.com/u/202539387?v=4"
       alt="Kaosar"
@@ -684,10 +833,30 @@
       <a href="https://personal-one-coral.vercel.app" target="_blank" rel="noopener" class="proj">
         <span class="proj-arrow">↗</span>
         <p class="proj-type">Experiment · Low-code</p>
-        <h3 class="proj-name">Personal v1</h3>
+        <h3 class="proj-name">Code Test</h3>
         <p class="proj-desc">A low-code experiment built to test ideas, not as a portfolio piece. Raw HTML, CSS &amp; JS.</p>
         <div class="proj-stack">
           <span>HTML</span><span>CSS</span><span>JS</span>
+        </div>
+      </a>
+
+      <a href="https://kaosar.framer.website" target="_blank" rel="noopener" class="proj">
+        <span class="proj-arrow">↗</span>
+        <p class="proj-type">Portfolio · Framer</p>
+        <h3 class="proj-name">Portfolio - v0</h3>
+        <p class="proj-desc">Second iteration of the personal site. Designed in Figma and shipped in Framer with zero code.</p>
+        <div class="proj-stack">
+          <span>Framer</span><span>Figma</span>
+        </div>
+      </a>
+
+      <a href="https://webocean.store" target="_blank" rel="noopener" class="proj">
+        <span class="proj-arrow">↗</span>
+        <p class="proj-type">E-commerce · Full Stack</p>
+        <h3 class="proj-name">Webocean Store</h3>
+        <p class="proj-desc">Full-stack e-commerce platform for the Webocean brand. Cart, checkout, and payments wired end to end.</p>
+        <div class="proj-stack">
+          <span>React</span><span>Laravel</span><span>Stripe</span>
         </div>
       </a>
 
@@ -723,6 +892,12 @@
 
 </div>
 
+<!-- ─── Glow orb ─────────────────────────────────────────── -->
+<div id="glow-orb" aria-hidden="true"></div>
+
+<!-- ─── Glitch overlay ──────────────────────────────────── -->
+<div id="glitch-overlay" aria-hidden="true"></div>
+
 <!-- ─── Footer ──────────────────────────────────────────── -->
 <footer>
   <div class="footer-inner">
@@ -749,6 +924,317 @@
       drawer.setAttribute("aria-hidden", "true");
     });
   });
+
+  // ── Glow orb (mouse + touch) ──────────────────────────────
+  const orb = document.getElementById("glow-orb");
+  let orbX = window.innerWidth / 2, orbY = window.innerHeight / 2;
+  let rafOrb;
+
+  function moveOrb(x, y) {
+    orbX += (x - orbX) * 0.12;
+    orbY += (y - orbY) * 0.12;
+    orb.style.transform = `translate(calc(${orbX}px - 50%), calc(${orbY}px - 50%))`;
+    rafOrb = requestAnimationFrame(() => moveOrb(x, y));
+  }
+
+  document.addEventListener("mousemove", e => {
+    cancelAnimationFrame(rafOrb);
+    moveOrb(e.clientX, e.clientY);
+  });
+
+  document.addEventListener("touchmove", e => {
+    cancelAnimationFrame(rafOrb);
+    const t = e.touches[0];
+    moveOrb(t.clientX, t.clientY);
+  }, { passive: true });
+
+  document.addEventListener("touchstart", e => {
+    cancelAnimationFrame(rafOrb);
+    const t = e.touches[0];
+    orbX = t.clientX; orbY = t.clientY;
+    orb.style.transform = `translate(calc(${orbX}px - 50%), calc(${orbY}px - 50%))`;
+  }, { passive: true });
+
+  // Shared particle colour (updated by palette switcher)
+  let particleRGB = "255,255,255";
+
+  // ── Particle field ───────────────────────────────────────
+  (function () {
+    const canvas = document.getElementById("particle-canvas");
+    const ctx    = canvas.getContext("2d");
+    const hero   = canvas.parentElement;
+    const isMobile = () => window.innerWidth < 640;
+    const COUNT  = () => isMobile() ? 45 : 85;
+    const CONNECT_DIST = 130;
+    const REPEL_DIST   = 110;
+    const REPEL_FORCE  = 3.5;
+
+    let W, H, particles = [];
+    let mx = -9999, my = -9999; // pointer in page coords
+
+    function resize() {
+      const r = hero.getBoundingClientRect();
+      W = canvas.width  = r.width;
+      H = canvas.height = r.height;
+    }
+
+    function makeParticle() {
+      return {
+        x:  Math.random() * W,
+        y:  Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        r:  Math.random() * 1.5 + 0.8,
+      };
+    }
+
+    function init() {
+      resize();
+      particles = Array.from({ length: COUNT() }, makeParticle);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Convert page pointer coords to canvas-local coords
+      const rect = hero.getBoundingClientRect();
+      const lx = mx - rect.left;
+      const ly = my - rect.top;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Repel from pointer
+        const dx = p.x - lx, dy = p.y - ly;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < REPEL_DIST && dist > 0) {
+          const force = (1 - dist / REPEL_DIST) * REPEL_FORCE;
+          p.vx += (dx / dist) * force * 0.08;
+          p.vy += (dy / dist) * force * 0.08;
+        }
+
+        // Friction & drift
+        p.vx *= 0.97;
+        p.vy *= 0.97;
+        p.x  += p.vx;
+        p.y  += p.vy;
+
+        // Wrap edges
+        if (p.x < 0) p.x = W;
+        if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H;
+        if (p.y > H) p.y = 0;
+
+        // Draw dot
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${particleRGB},0.7)`;
+        ctx.fill();
+
+        // Draw connecting lines
+        for (let j = i + 1; j < particles.length; j++) {
+          const q  = particles[j];
+          const ex = p.x - q.x, ey = p.y - q.y;
+          const ed = Math.sqrt(ex * ex + ey * ey);
+          if (ed < CONNECT_DIST) {
+            const alpha = (1 - ed / CONNECT_DIST) * 0.35;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = `rgba(${particleRGB},${alpha})`;
+            ctx.lineWidth   = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    // Pointer tracking
+    document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; });
+    document.addEventListener("touchmove", e => {
+      mx = e.touches[0].clientX; my = e.touches[0].clientY;
+    }, { passive: true });
+    document.addEventListener("touchend", () => { mx = -9999; my = -9999; });
+
+    window.addEventListener("resize", () => { resize(); });
+
+    init();
+    draw();
+  })();
+
+  // ── Card shine (mouse + touch) ────────────────────────────
+  document.querySelectorAll(".proj").forEach(card => {
+    function applyShine(x, y) {
+      const r = card.getBoundingClientRect();
+      const px = ((x - r.left) / r.width  * 100).toFixed(1) + "%";
+      const py = ((y - r.top)  / r.height * 100).toFixed(1) + "%";
+      card.style.setProperty("--shine-x", px);
+      card.style.setProperty("--shine-y", py);
+    }
+    card.addEventListener("mousemove", e => applyShine(e.clientX, e.clientY));
+    card.addEventListener("touchmove", e => {
+      applyShine(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+  });
+
+  // ── Skills: stagger reveal on scroll ─────────────────────
+  (function () {
+    const skillsSection = document.getElementById("skills");
+    const skillItems    = [...skillsSection.querySelectorAll(".skill-group li")];
+
+    // Stagger each item's animation delay across the whole grid
+    skillItems.forEach((li, i) => {
+      li.style.animationDelay = (i * 45) + "ms";
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        skillsSection.classList.add("skills-visible");
+        observer.disconnect();
+      }
+    }, { threshold: 0.12 });
+
+    observer.observe(skillsSection);
+  })();
+
+  // ── Magnetic contact links ────────────────────────────────
+  document.querySelectorAll(".clink").forEach(btn => {
+    btn.addEventListener("mousemove", e => {
+      const r  = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width  / 2);
+      const dy = e.clientY - (r.top  + r.height / 2);
+      btn.style.transition = "transform 0.1s ease, color 0.18s";
+      btn.style.transform  = `translate(${dx * 0.28}px, ${dy * 0.28}px)`;
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.style.transition = "transform 0.5s cubic-bezier(0.34,1.56,0.64,1), color 0.18s";
+      btn.style.transform  = "";
+    });
+  });
+
+  // ── Chip burst ────────────────────────────────────────────
+  document.querySelectorAll(".chip").forEach(chip => {
+    chip.addEventListener("click", e => {
+      chip.classList.remove("chip-pop");
+      void chip.offsetWidth; // force reflow to restart animation
+      chip.classList.add("chip-pop");
+      chip.addEventListener("animationend", () => chip.classList.remove("chip-pop"), { once: true });
+
+      const ripple = document.createElement("span");
+      ripple.className = "chip-ripple";
+      const r = chip.getBoundingClientRect();
+      ripple.style.left = (e.clientX - r.left) + "px";
+      ripple.style.top  = (e.clientY - r.top)  + "px";
+      chip.appendChild(ripple);
+      ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+    });
+    // Touch support for chip burst
+    chip.addEventListener("touchstart", e => {
+      const t = e.touches[0];
+      const synth = new MouseEvent("click", { clientX: t.clientX, clientY: t.clientY });
+      chip.dispatchEvent(synth);
+    }, { passive: true });
+  });
+
+  // ── Periodic palette glitch ───────────────────────────────
+  (function () {
+    const palettes = [
+      { bg:"#09090C", surface:"#111117", border:"#1C1C25", text:"#EDEAF8",
+        muted:"#6B697E", subtle:"#31303E",
+        accent:"#7C6AF5", dim:"rgba(124,106,245,0.10)", glow:"rgba(124,106,245,0.22)",
+        rgb:"124,106,245" },                                        // purple
+
+      { bg:"#000000", surface:"#0D0D0D", border:"#1A1A1A", text:"#F5F5F5",
+        muted:"#666666", subtle:"#2A2A2A",
+        accent:"#FFFFFF", dim:"rgba(255,255,255,0.07)", glow:"rgba(255,255,255,0.14)",
+        rgb:"255,255,255" },                                        // black/white
+
+      { bg:"#0A0000", surface:"#130000", border:"#200000", text:"#FFF0F0",
+        muted:"#7A5555", subtle:"#2A1010",
+        accent:"#EF4444", dim:"rgba(239,68,68,0.10)", glow:"rgba(239,68,68,0.22)",
+        rgb:"239,68,68" },                                          // red
+
+      { bg:"#080700", surface:"#120F00", border:"#1C1800", text:"#FFFDE8",
+        muted:"#7A7055", subtle:"#2A2500",
+        accent:"#F59E0B", dim:"rgba(245,158,11,0.10)", glow:"rgba(245,158,11,0.22)",
+        rgb:"245,158,11" },                                         // amber
+
+      { bg:"#00040A", surface:"#000C17", border:"#001525", text:"#E8F0FF",
+        muted:"#4A6A8A", subtle:"#001530",
+        accent:"#3B82F6", dim:"rgba(59,130,246,0.10)", glow:"rgba(59,130,246,0.22)",
+        rgb:"59,130,246" },                                         // blue
+
+      { bg:"#000A0A", surface:"#001212", border:"#001A1A", text:"#E8FFFF",
+        muted:"#3A7A7A", subtle:"#001818",
+        accent:"#06B6D4", dim:"rgba(6,182,212,0.10)", glow:"rgba(6,182,212,0.22)",
+        rgb:"6,182,212" },                                          // cyan
+
+      { bg:"#000A02", surface:"#001205", border:"#001A08", text:"#E8FFE8",
+        muted:"#3A7A4A", subtle:"#001808",
+        accent:"#22C55E", dim:"rgba(34,197,94,0.10)", glow:"rgba(34,197,94,0.22)",
+        rgb:"34,197,94" },                                          // green
+
+      { bg:"#0A0400", surface:"#120800", border:"#1A0C00", text:"#FFF5E8",
+        muted:"#7A5533", subtle:"#2A1500",
+        accent:"#F97316", dim:"rgba(249,115,22,0.10)", glow:"rgba(249,115,22,0.22)",
+        rgb:"249,115,22" },                                         // orange
+
+      { bg:"#08000A", surface:"#110012", border:"#1A001A", text:"#FDE8FF",
+        muted:"#7A3A7A", subtle:"#200020",
+        accent:"#D946EF", dim:"rgba(217,70,239,0.10)", glow:"rgba(217,70,239,0.22)",
+        rgb:"217,70,239" },                                         // magenta
+    ];
+
+    const root    = document.documentElement;
+    const body    = document.body;
+    const overlay = document.getElementById("glitch-overlay");
+    let idx = 1; // start after current black/white
+
+    function applyPalette(p) {
+      root.style.setProperty("--bg",         p.bg);
+      root.style.setProperty("--surface",    p.surface);
+      root.style.setProperty("--border",     p.border);
+      root.style.setProperty("--text",       p.text);
+      root.style.setProperty("--muted",      p.muted);
+      root.style.setProperty("--subtle",     p.subtle);
+      root.style.setProperty("--accent",     p.accent);
+      root.style.setProperty("--accent-dim", p.dim);
+      root.style.setProperty("--accent-glow",p.glow);
+      root.style.setProperty("--green",      p.accent);
+      particleRGB = p.rgb;
+    }
+
+    function triggerGlitch() {
+      // Start visual chaos
+      body.classList.remove("glitching");
+      overlay.classList.remove("glitching");
+      void body.offsetWidth; // reflow
+
+      body.classList.add("glitching");
+      overlay.classList.add("glitching");
+
+      // Switch palette midway through the glitch
+      setTimeout(() => {
+        idx = (idx + 1) % palettes.length;
+        applyPalette(palettes[idx]);
+      }, 450);
+
+      // Clean up animation classes
+      setTimeout(() => {
+        body.classList.remove("glitching");
+        overlay.classList.remove("glitching");
+      }, 1700);
+
+      // Schedule next glitch
+      const delay = 8000 + Math.random() * 2000; // 8–10 s
+      setTimeout(triggerGlitch, delay);
+    }
+
+    // First fire after a random 8–10 s
+    setTimeout(triggerGlitch, 8000 + Math.random() * 2000);
+  })();
 </script>
 
 </body>
