@@ -646,15 +646,19 @@
       border-color: var(--subtle);
     }
 
-    /* ─── Theme preference overlay ───────────────────────── */
+    /* ─── Overlays (flash warning + theme prompt) ────────── */
+    #flash-warn,
     #theme-prompt {
-      position: fixed; inset: 0; z-index: 20000;
-      background: rgba(0,0,0,0.72);
+      position: fixed; inset: 0;
       display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.72);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       opacity: 1; transition: opacity 0.3s;
     }
+    #flash-warn   { z-index: 20001; }
+    #theme-prompt { z-index: 20000; }
+    #flash-warn.hidden,
     #theme-prompt.hidden { opacity: 0; pointer-events: none; }
     .tp-box {
       background: var(--surface);
@@ -1054,12 +1058,20 @@
 <!-- ─── Glitch overlay ──────────────────────────────────── -->
 <div id="glitch-overlay" aria-hidden="true"></div>
 
+<!-- ─── Flash warning (first visit, all users) ────────────── -->
+<div id="flash-warn" class="hidden" role="alertdialog" aria-modal="true" aria-label="Photosensitivity warning">
+  <div class="tp-box">
+    <h3>⚠️ Heads up</h3>
+    <p>This site has periodic flashing colour effects every 8–10 s that rapidly shift colours. If you have photosensitive epilepsy or are sensitive to quick colour changes, please be aware before continuing.</p>
+    <button class="tp-btn primary" id="flash-warn-ok" style="width:100%">Got it, continue</button>
+  </div>
+</div>
+
 <!-- ─── Theme preference prompt ─────────────────────────── -->
 <div id="theme-prompt" class="hidden" aria-modal="true" role="dialog" aria-label="Choose theme">
   <div class="tp-box">
     <h3>Choose your vibe</h3>
     <p>Your device is in light mode. Want to keep it light or go dark?</p>
-    <p class="tp-warn"><strong>⚠️ Heads up</strong> — this site has periodic flashing colour effects every 8–10 s that rapidly shift colours. If you have photosensitive epilepsy or are sensitive to quick colour changes, please be aware before continuing.</p>
     <div class="tp-btns">
       <button class="tp-btn" id="tp-light">☀️ Light</button>
       <button class="tp-btn primary" id="tp-dark">🌑 Dark</button>
@@ -1309,11 +1321,13 @@
 
   // ── Theme init ────────────────────────────────────────────
   (function () {
-    const root   = document.documentElement;
-    const prompt = document.getElementById("theme-prompt");
-    const tpDark = document.getElementById("tp-dark");
-    const tpLight= document.getElementById("tp-light");
-    const themeBtn = document.getElementById("theme-toggle");
+    const root      = document.documentElement;
+    const flashWarn = document.getElementById("flash-warn");
+    const flashOk   = document.getElementById("flash-warn-ok");
+    const prompt    = document.getElementById("theme-prompt");
+    const tpDark    = document.getElementById("tp-dark");
+    const tpLight   = document.getElementById("tp-light");
+    const themeBtn  = document.getElementById("theme-toggle");
 
     function setTheme(mode, save) {
       root.setAttribute("data-theme", mode);
@@ -1321,27 +1335,37 @@
       const isLight = mode === "light";
       themeBtn.setAttribute("aria-checked", String(isLight));
       themeBtn.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
-      // Update particle colour for base theme
       if (!isLight) {
         if (particleRGB === "0,0,0") particleRGB = "255,255,255";
       } else {
         particleRGB = "80,80,80";
       }
-      // re-apply current glitch palette immediately so accent/particles sync now
       if (window.__applyCurrentPalette) window.__applyCurrentPalette();
     }
 
-    // Always start dark, then check saved pref
-    const saved = localStorage.getItem("kaosar-theme");
-    if (saved) {
-      setTheme(saved, false);
-    } else {
-      setTheme("dark", false);
-      // If device is light mode, show the prompt
-      if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    const saved   = localStorage.getItem("kaosar-theme");
+    const warned  = localStorage.getItem("kaosar-warned");
+    const isLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+
+    // Always apply theme first
+    setTheme(saved || "dark", false);
+
+    // Show flash warning to ALL first-time visitors
+    if (!warned) {
+      flashWarn.classList.remove("hidden");
+    } else if (!saved && isLight) {
+      // Returning visitor who hasn't chosen a theme yet and is on light mode
+      prompt.classList.remove("hidden");
+    }
+
+    flashOk.addEventListener("click", () => {
+      localStorage.setItem("kaosar-warned", "1");
+      flashWarn.classList.add("hidden");
+      // After warning, show theme choice if light mode and no saved pref
+      if (!saved && isLight) {
         prompt.classList.remove("hidden");
       }
-    }
+    });
 
     tpDark.addEventListener("click", () => {
       setTheme("dark", true);
@@ -1356,7 +1380,6 @@
       setTheme(next, true);
     });
 
-    // expose for glitch
     window.__setTheme = setTheme;
   })();
 
